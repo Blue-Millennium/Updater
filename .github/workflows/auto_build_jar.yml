@@ -87,7 +87,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew shadowJar
 
-      - name: Rename JAR file
+      - name: Rename and upload JAR file
         id: rename_and_upload
         run: |
           TARGET_JAR="BM_Updater-${{ env.VERSION }}.jar"
