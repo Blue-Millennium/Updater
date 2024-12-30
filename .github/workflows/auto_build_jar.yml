@@ -82,10 +82,10 @@ jobs:
 
       - name: Update version in gradle.properties
         run: |
-          sed -i "s/\(version: \).*/\1'${{ env.VERSION }}'/" gradle.properties
+          sed -i "s/\(mod_version= \).*/\1'${{ env.VERSION }}'/" gradle.properties
 
       - name: Build with Gradle
-        run: ./gradlew shadowJar
+        run: ./gradlew build
 
       - name: Rename and upload JAR file
         id: rename_and_upload
