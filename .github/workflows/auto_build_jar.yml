@@ -50,12 +50,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Check if commit message contains [skip]
+      - name: Check if commit message contains [skip] and if branch is master
         id: check_skip
         if: env.SKIP_BUILD == 'false'
         run: |
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          if [[ "$COMMIT_MESSAGE" == "[skip]"* ]]; then
+          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+          if [[ "$COMMIT_MESSAGE" == "[skip]"* || "$BRANCH_NAME" == "master" ]]; then
             echo "SKIP_UPLOAD=true" >> $GITHUB_ENV
           else
             echo "SKIP_UPLOAD=false" >> $GITHUB_ENV
@@ -105,6 +106,7 @@ jobs:
             > ${{ github.event.head_commit.message }}
           draft: false
           prerelease: true
+          makeLatest: true
           generateReleaseNotes: true
           artifacts: ${{ env.FINAL_JAR_NAME }}.jar
           token: ${{ secrets.GITHUB_TOKEN }}
